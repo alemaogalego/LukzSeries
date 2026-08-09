@@ -9,4 +9,7 @@ public record DadosSeries(@JsonAlias("Title") String titulo,
                           @JsonAlias("imdbRating") String avaliacao) {
 
 
+    public int totalDeTemporadas() {
+        return totalTemporada;
+    }
 }
