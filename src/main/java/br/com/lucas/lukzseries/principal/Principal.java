@@ -1,0 +1,44 @@
+package br.com.lucas.lukzseries.principal;
+
+import br.com.lucas.lukzseries.model.DadosSeries;
+import br.com.lucas.lukzseries.model.DadosTemporada;
+import br.com.lucas.lukzseries.service.ConsumoApi;
+import br.com.lucas.lukzseries.service.ConverteDados;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class Principal {
+
+    private Scanner leitura = new Scanner(System.in);
+    private ConsumoApi consumo = new ConsumoApi();
+    private ConverteDados conversor = new ConverteDados();
+
+    private final String ENDERECO= "http://www.omdbapi.com/?t=";
+    private final String API_KEY= "&apiKey=3eb9ae48";
+
+    public void exibirMenu() {
+        System.out.println("=== Menu ===");
+        System.out.println("Buscar o nome da série: ");
+        var nomeSerie = leitura.nextLine();
+
+        var json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + API_KEY);
+
+        DadosSeries dados = conversor.obterDados(json, DadosSeries.class);
+        System.out.println(dados);
+
+        List<DadosTemporada> temporadas = new ArrayList<>();
+
+		for (int i = 1; i <= dados.totalDeTemporadas(); i++) {
+			json = consumo.obterDados(ENDERECO + nomeSerie.replace(" ", "+") + "&Season=" + i + API_KEY);
+			DadosTemporada dadosTemporada = conversor.obterDados(json, DadosTemporada.class);
+			temporadas.add(dadosTemporada);
+		}
+		temporadas.forEach(System.out::println);
+
+        temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e)));
+
+
+    }
+}
