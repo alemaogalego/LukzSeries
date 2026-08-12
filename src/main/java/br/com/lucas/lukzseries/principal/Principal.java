@@ -7,11 +7,9 @@ import br.com.lucas.lukzseries.model.Episodio;
 import br.com.lucas.lukzseries.service.ConsumoApi;
 import br.com.lucas.lukzseries.service.ConverteDados;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Scanner;
-import java.util.stream.Collectors;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.*;
 
 public class Principal {
 
@@ -61,6 +59,25 @@ public class Principal {
                 .toList();
 
         episodios.forEach(System.out::println);
+
+        System.out.println("Digite o ano para buscar os episódios lançados a partir dele: ");
+        var ano = leitura.nextInt();
+        leitura.nextLine(); //
+
+
+        LocalDate dataBusca = LocalDate.of(ano, 1,1);
+
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+
+        episodios.stream()
+                .filter(e -> e.getDataLancamento() != null && e.getDataLancamento().isAfter(dataBusca))
+                .forEach(e -> System.out.println(
+                        "Temporada: " + e.getTemporada() +
+                                " - Episódio: " + e.getNumeroEpisodio() +
+                                " - Data Lancamento: " + e.getDataLancamento().format(formatter)
+
+                ));
     }
 }
 
