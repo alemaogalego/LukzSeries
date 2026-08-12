@@ -1,13 +1,17 @@
 package br.com.lucas.lukzseries.principal;
 
+import br.com.lucas.lukzseries.model.DadosEpisodio;
 import br.com.lucas.lukzseries.model.DadosSeries;
 import br.com.lucas.lukzseries.model.DadosTemporada;
+import br.com.lucas.lukzseries.model.Episodio;
 import br.com.lucas.lukzseries.service.ConsumoApi;
 import br.com.lucas.lukzseries.service.ConverteDados;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 
 public class Principal {
 
@@ -39,6 +43,24 @@ public class Principal {
 
         temporadas.forEach(t -> t.episodios().forEach(e -> System.out.println(e)));
 
+        List<DadosEpisodio> dadosEpisodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream())
+                .toList();
 
+
+        System.out.println("\n=== Top 5 episódios com melhor avaliação ===");
+        dadosEpisodios.stream()
+                .filter(e -> !e.avaliacao().equals("N/A"))
+                .sorted(Comparator.comparing(DadosEpisodio::avaliacao).reversed())
+                .limit(5)
+                .forEach(System.out::println);
+
+        List<Episodio> episodios = temporadas.stream()
+                .flatMap(t -> t.episodios().stream()
+                .map(d -> new Episodio(t.numero(), d)))
+                .toList();
+
+        episodios.forEach(System.out::println);
     }
 }
+
