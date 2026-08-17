@@ -21,7 +21,6 @@ public class Episodio {
         } catch (NumberFormatException ex) {
             this.avaliacao = 0.0; // Define um valor padrão caso seja "N/A"
         }
-
         try {
             this.dataLancamento = LocalDate.parse(dadosEpisodio.dataLancamento());
         } catch (DateTimeParseException ex) {
