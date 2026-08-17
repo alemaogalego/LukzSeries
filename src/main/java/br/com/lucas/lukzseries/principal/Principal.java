@@ -7,6 +7,7 @@ import br.com.lucas.lukzseries.model.Episodio;
 import br.com.lucas.lukzseries.service.ConsumoApi;
 import br.com.lucas.lukzseries.service.ConverteDados;
 
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -88,15 +89,14 @@ public class Principal {
         System.out.println(avaliacoesPorTemporada);
 
         DoubleSummaryStatistics est = episodios.stream()
-                .filter(e -> e.getAvaliacao()> 0.0)
+                .filter(e -> e.getAvaliacao() > 0.0)
                 .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
-        System.out.println("\n=== Estatísticas de avaliação ===");
         System.out.println(est);
+        System.out.println("\n=== Estatísticas de avaliação ===");
         System.out.println("Média: " + est.getAverage());
-        System.out.println("Melhor ep: " + est.getMax());
-        System.out.println("Pior ep: " + est.getMin());
-        System.out.println("Total de episódios: " + est.getCount());
-
+        System.out.println("Melhor episódio: " + est.getMax());
+        System.out.println("Pior episódio: " + est.getMin());
+        System.out.println("Quantidade: " + est.getCount());
 
 //
 //        System.out.println("Digite o ano para buscar os episódios lançados a partir dele: ");
